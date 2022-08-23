@@ -11,8 +11,13 @@ defmodule TodoApiWeb.TodoController do
     render(conn, "index.json", todos: todos)
   end
 
-  def create() do
-
+  def create(conn, todo_params) do
+    with {:ok, %Todo{} = todo} <- Models.create_todo(todo_params) do
+      conn
+      |> put_status(:created)
+      |> put_resp_header("location", Routes.todo_path(conn, :show, todo))
+      |> render("show.json", todo: todo)
+    end
   end
 
   def show(conn, %{"id" => id}) do
