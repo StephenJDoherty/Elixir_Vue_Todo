@@ -1,4 +1,4 @@
-defmodule TodoApiWeb.LayoutView do
+defmodule TodoApiWeb.ChangeSetView do
   use TodoApiWeb, :view
 
   def translate_errors(changeset) do
