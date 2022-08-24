@@ -25,12 +25,19 @@ defmodule TodoApiWeb.TodoController do
     render(conn, "show.json", todo: todo)
   end
 
-  def update() do
+  def update(conn, todo_params) do
+    todo = Models.get_todo!(conn.path_params["id"])
 
+    with {:ok, %Todo{} = todo} <- Models.update_todo(todo, todo_params)
+      render(conn, "show.json", todo: todo)
   end
 
-  def delete() do
+  def delete(conn, %{"id" => id}) do
+    todo = Models.get_todo!(id)
 
+    with {:ok, %Todo{}} <- Models.delete_todo(todo) do
+      send_resp(conn, :no_content, "")
+    end
   end
 
 
